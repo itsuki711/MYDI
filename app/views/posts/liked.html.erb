@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>いいねした投稿</title>
+</head>
+<body>
+  <h1>いいねした投稿</h1>
+
+  <% if @liked_posts.any? %>
+    <ul>
+      <% @liked_posts.each do |post| %>
+        <li>
+          <%= link_to post.title, post_path(post) %><br>
+          <small>タグ: <%= post.tag %>, 投稿日: <%= post.created_at.strftime('%Y年%m月%d日 %H:%M') %></small>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>いいねした投稿はありません。</p>
+  <% end %>
+
+  <%= link_to "投稿一覧に戻る", posts_path %>
+</body>
+</html>

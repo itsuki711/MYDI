@@ -1,0 +1,39 @@
+// Place all the styles related to the likes controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.like-section {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px; /* ボタンとカウンターの間にスペースを作る */
+  }
+  
+  .like-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  
+  
+  .like-button.unlike {
+    background-color: #FF4C4C;
+    color: white;
+  }
+  
+  .icon {
+    margin-right: 5px; /* アイコンと文字の間隔を調整 */
+  }
+  
+  .like-count {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #555;
+  }
+  

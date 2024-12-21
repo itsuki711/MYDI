@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post詳細 - Mydi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+      background-color: #f9f9f9;
+    }
+    .post-container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .post-title {
+      font-size: 1.8em;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .post-meta {
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 20px;
+    }
+    .post-content {
+      margin-bottom: 20px;
+      color: #555;
+      font-size: 1.2em; 
+      line-height: 1.8;
+    }
+    .like-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .like-section button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    .like-button {
+      background-color: #007BFF;
+      color: white;
+    }
+    .unlike-button {
+      background-color: #FF4C4C;
+      color: white;
+    }
+    .user-list {
+      margin-top: 20px;
+      list-style: none;
+      padding: 0;
+    }
+    .user-list li {
+      padding: 5px 0;
+      border-bottom: 1px solid #ddd;
+    }
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #007BFF;
+    }
+  </style>
+</head>
+<body>
+
+<div class="post-container">
+  <h1 class="post-title"><%= @post.title %></h1>
+  <p class="post-meta">
+   投稿者:<%= @post.user.name %><br>
+    タグ: <%= @post.tag %><br>
+    投稿日: <%= @post.created_at.strftime('%Y年%m月%d日 %H:%M') %>
+  </p>
+  <div class="post-content"><%= @post.content %></div>
+
+  <div class="like-section">
+    <% if user_signed_in? %>
+      <% if current_user.already_liked?(@post) %>
+        <%= link_to post_like_path(@post), method: :delete, class: "unlike-button" do %>
+          いいねを取り消す (<%= @post.likes.count %>)
+        <% end %>
+      <% else %>
+        <%= link_to post_likes_path(@post), method: :post, class: "like-button" do %>
+          いいね (<%= @post.likes.count %>)
+        <% end %>
+      <% end %>
+    <% else %>
+      <p>いいねの数: <%= @post.likes.count %></p>
+    <% end %>
+  </div>
+
+  <h2>いいねしたユーザー</h2>
+  <ul class="user-list">
+    <% @post.liked_users.each do |user| %>
+      <li><%= user.name %></li>
+    <% end %>
+  </ul>
+
+  <%= link_to "Post一覧に戻る", posts_path, class: "back-link" %>
+</div>
+
+</body>
+</html>

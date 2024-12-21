@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MYDI - 投稿一覧</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #007BFF;
+      padding: 10px 20px;
+      color: white;
+    }
+    .navbar .links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+    }
+    .navbar .links a:hover {
+      text-decoration: underline;
+    }
+
+    
+    .content {
+      padding: 20px;
+      max-width: 1200px; /* 幅を広げる */
+      margin: 20px auto; /* 上下の余白を調整 */
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .post {
+      margin-bottom: 20px;
+      padding: 20px;
+      background: #fefefe;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .like-section {
+      margin-top: 10px;
+    }
+    .like-section .like-button {
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    .like-count {
+      margin-left: 10px;
+      font-weight: bold;
+    }
+    .search-form {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+<style>
+  .search-form {
+    margin-bottom: 20px;
+    text-align: center; /* 検索バーを中央揃え */
+  }
+  .search-form input[type="text"] {
+    width: 60%; /* 横幅を大きくする */
+    height: 40px; /* 高さを大きくする */
+    font-size: 1.2em; /* フォントサイズを大きくする */
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .search-form input[type="submit"] {
+    height: 40px;
+    font-size: 1.2em;
+    padding: 5px 15px;
+    margin-left: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .search-form input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+</style>
+
+
+<div class="navbar">
+  <h1>MYDI</h1>
+  <div class="links">
+    <% if user_signed_in? %>
+      <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "logout-button" %>
+      <%= link_to "新規投稿", new_post_path %>
+      <%= link_to "マイページ", user_path(current_user.id) %>
+    <% end %>
+  </div>
+</div>
+
+<div class="content">
+  <h3>投稿一覧ページ</h3>
+
+  <div class="search-form">
+    
+    <%= form_tag(posts_path, method: :get) do %>
+      <%= text_field_tag :search, params[:search], placeholder: "タイトル、タグ、またはユーザー名で検索" %>
+      <%= submit_tag '検索' %>
+    <% end %>
+  </div>
+
+  <% @posts.each do |p| %>
+    <div class="post">
+      <div class="post-title">
+        <strong>投稿者:</strong> <%= p.user.name %><br>
+        <strong>タイトル:</strong> <%= p.title %>
+      </div>
+
+      <div class="post-tag">
+        <strong>タグ:</strong> <%= p.tag %>
+      </div>
+
+      <div class="post-content">
+        <strong>概要:</strong> <%= p.content %>
+      </div>
+
+      <div class="post-created-at">
+        <strong>投稿日:</strong> <%= l(p.created_at, format: :short) %>
+      </div>
+      <hr>
+      <%= link_to "詳細", post_path(p.id) %>
+
+      <div class="like-section">
+        <% if user_signed_in? %>
+          <% if current_user.already_liked?(p) %>
+            <%= button_to post_like_path(p, p.likes.find_by(user_id: current_user.id)), method: :delete, class: "like-button unlike" do %>
+              <span class="icon">❤️</span>
+              <span>いいねを取り消す</span>
+            <% end %>
+          <% else %>
+            <%= button_to post_likes_path(p.id), method: :post, class: "like-button like" do %>
+              <span class="icon">🤍</span>
+              <span>いいね</span>
+            <% end %>
+          <% end %>
+          <span class="like-count"><%= p.likes.count %></span>
+        <% else %>
+          <span class="like-count">いいねの数: <%= p.likes.count %></span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+</body>
+</html>

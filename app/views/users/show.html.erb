@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MYDI - ユーザー情報</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #007BFF;
+      padding: 10px 20px;
+      color: white;
+    }
+    .navbar .links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+    }
+    .navbar .links a:hover {
+      text-decoration: underline;
+    }
+    .content {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .user-info, .user-posts {
+      margin-bottom: 20px;
+    }
+    .post {
+      margin-bottom: 20px;
+      padding: 20px;
+      background: #fefefe;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .search-form {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .search-form input[type="text"] {
+      width: 60%;
+      height: 40px;
+      font-size: 1.2em;
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .search-form input[type="submit"] {
+      height: 40px;
+      font-size: 1.2em;
+      padding: 5px 15px;
+      margin-left: 10px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .search-form input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <h1>MYDI</h1>
+  <div class="links">
+    <% if user_signed_in? %>
+     <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "logout-button" %>
+      <%= link_to "新規投稿", new_post_path %>
+      <%= link_to "マイページ", user_path(current_user.id) %>
+    <% end %>
+  </div>
+</div>
+
+<div class="content">
+  <h3>ユーザー情報</h3>
+  <div class="user-info">
+    <p><strong>名前:</strong> <%= @user.name %></p>
+    <p><strong>メールアドレス:</strong> <%= @user.email %></p>
+    
+
+    <% if current_user.id == @user.id %>
+      <div class="edit-profile">
+        <%= link_to "ユーザー情報を編集", edit_user_registration_path %>
+      </div>
+    <% end %>
+  </div>
+
+  <hr>
+
+  <%= link_to "いいねした投稿", liked_posts_path %>
+
+  <h2>ユーザーの投稿一覧</h2>
+
+  <div class="search-form">
+    <%= form_tag(users_path, method: :get) do %>
+      <%= text_field_tag :search, params[:search], placeholder: "タイトルやタグで検索", class: "search-field" %>
+      <%= submit_tag '検索', class: "search-button" %>
+    <% end %>
+  </div>
+
+  <div class="user-posts">
+    <% if @user.posts.any? %>
+      <% @user.posts.each do |p| %>
+        <div class="post">
+          <div class="post-title">
+            <strong>タイトル:</strong> <%= p.title %>
+          </div>
+          <div class="post-tag">
+            <strong>タグ:</strong> <%= p.tag %>
+          </div>
+          <div class="post-content">
+            <strong>概要:</strong> <%= p.content %>
+          </div>
+
+          <div class="post-actions">
+            <%= link_to "編集", edit_post_path(p.id), class: "edit-link" %>
+            <%= button_to "削除", post_path(p.id), method: :delete, class: "delete-button" %>
+          </div>
+        </div>
+        <hr>
+      <% end %>
+    <% else %>
+      <p>投稿がありません。</p>
+    <% end %>
+  </div>
+
+  <%= link_to "投稿一覧に戻る", posts_path, class: "back-link" %>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+// Place all the styles related to the posts controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+/* フォーム全体を中央配置 */
+/* フォーム全体を中央配置 */
+.post-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 各入力フィールドのスタイル */
+  .form-group {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  /* 送信ボタンのスタイル */
+  .btn-submit {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-submit:hover {
+    background-color: #45a049;
+  }
+  
+  /* ページタイトルのスタイル */
+  .form-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+
+/* 編集と削除ボタンを横並びに配置 */
+.post-actions {
+    display: flex;
+    gap: 10px; /* ボタン間の隙間 */
+  }
+  
+  .edit-link {
+    color: #007bff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-link:hover {
+    background-color: #e6f0ff;
+  }
+  
+  .delete-button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #dc3545;
+    border-radius: 5px;
+    color: white;
+    background-color: #dc3545;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .delete-button:hover {
+    background-color: #c82333;
+  }
+  
